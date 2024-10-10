@@ -48,7 +48,7 @@ private:
         cellule *m_prec;
 
         cellule(const TYPE& c, cellule*s = nullptr, cellule*p = nullptr)
-            : m_contenu(c), m_suiv(s), m_prec(p)
+                : m_contenu(c), m_suiv(s), m_prec(p)
         {}
         ~cellule() = default;
     };
@@ -86,7 +86,7 @@ public:
     iterateur insert(iterateur, const TYPE&);     // Retourne un iterator sur la position de la valeur ajoutee
     iterateurInverse insert(iterateurInverse, const TYPE&);
 
-    iterateur erase(iterateur);                   // Retourne un iterartor sur la position suivant celle supprimee
+    iterateur erase(iterateur);                   // Retourne un iterator sur la position suivant celle supprimee
     iterateurInverse erase(iterateurInverse);
 
     void push_back(const TYPE&);
@@ -111,10 +111,11 @@ public:
     iterateurInverse rbegin();
     iterateurInverse rend();
 
+
     //algorithmes
-    void reverse(); // Inverse le contenu de la liste
-    void splice(iterateur, liste&); // Transfere le contenu de la liste recue dans la liste courante
+    void splice(iterateur, liste&);  // Transfere le contenu de la liste recue dans la liste courante
     void resize(size_t, const TYPE& = TYPE());
+    void reverse();
 
     //fonction de mise au point (code jetable)
     friend void afficher(std::ostream& out, const liste<TYPE>& source)
@@ -131,8 +132,8 @@ public:
         {
             if (i<skipde || i>skipa)
                 out << i << "=> <" << p->m_contenu
-                << "," << p->m_suiv << "," << p->m_prec
-                << ">\n";
+                    << "," << p->m_suiv << "," << p->m_prec
+                    << ">\n";
             else if (i == skipde)
                 out << "   .....\n";
             i++;
@@ -253,7 +254,7 @@ public:
 ///////////////////////////////////////////////////////////
 template <typename TYPE>
 liste<TYPE>::liste()
-    : m_apres(TYPE()), m_debut(&m_apres), m_dim(0)
+        : m_apres(TYPE()), m_debut(&m_apres), m_dim(0)
 {}
 
 template <typename TYPE>
@@ -433,7 +434,7 @@ void liste<TYPE>::resize(size_t n, const TYPE& val)
 }
 
 template <typename TYPE>
-void liste<TYPE>::splice(iterateur i, liste& lst)
+void liste<TYPE>::splice(iterateur i, liste<TYPE>& lst)
 {
     if (lst.empty())
         return;
@@ -450,8 +451,8 @@ void liste<TYPE>::splice(iterateur i, liste& lst)
     //rendre L vide
     lst.m_debut = lst.m_apres.m_prec = lst.m_apres.m_suiv = &lst.m_apres;
 
-    m_dim += lst.m_size;
-    lst.m_size= 0;
+    m_dim += lst.m_dim;
+    lst.m_dim= 0;
 }
 
 ///////////////////////////////////////////////////////////
