@@ -60,24 +60,39 @@ typename liste<T>::cellule *liste<T>::insert(liste::cellule *, const T &) {
 }
 
 //Mathieu
+// TODO tester
 template<typename T>
-typename liste<T>::cellule *liste<T>::erase(liste::cellule *) {
-    return nullptr;
+typename liste<T>::cellule *liste<T>::erase(liste::cellule * c) {
+    cellule * c_suivant = c->m_suiv;
+    c_suivant->m_prec = c->m_prec;
+
+    delete c;
+    m_dim--;
+
+    return c_suivant;
 }
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rbegin() {
-    return liste::iterateurInverse();
+    return liste::iterateurInverse(&m_apres);
 }
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rend() {
-    return liste::iterateurInverse();
+    return liste::iterateurInverse(m_debut);
 }
 
 //Mathieu
 template<typename T>
-liste<T> &liste<T>::operator=(const liste &) {
+liste<T> &liste<T>::operator=(const liste & lst) {
+    if (lst == *this){
+        return *this;
+    }
+
+    this->clear();
+    for (iterateur i = lst.begin();  i != i.end() ; i++) {
+        this->push_back(*i);
+    }
     return *this;
 }
 
