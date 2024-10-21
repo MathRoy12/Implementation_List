@@ -38,89 +38,108 @@ afficher(std::cout, maListe);
 *//////////////////////////////////////////////////////////
 
 
-template <typename TYPE>
-class liste
-{
+template<typename TYPE>
+class liste {
 private:
     struct cellule {
         TYPE m_contenu;
         cellule *m_suiv;
         cellule *m_prec;
 
-        cellule(const TYPE& c, cellule*s = nullptr, cellule*p = nullptr)
-                : m_contenu(c), m_suiv(s), m_prec(p)
-        {}
+        cellule(const TYPE &c, cellule *s = nullptr, cellule *p = nullptr)
+                : m_contenu(c), m_suiv(s), m_prec(p) {}
+
         ~cellule() = default;
     };
 
     cellule *m_debut;
-    cellule  m_apres;
-    size_t   m_dim;
+    cellule m_apres;
+    size_t m_dim;
 
     //********* fonctions generatrices privees
 
     //inserer avant cette cellule
-    cellule* insert(cellule*, const TYPE&);
+    cellule *insert(cellule *, const TYPE &);
+
     //enlever cette cellule
-    cellule* erase(cellule*);
+    cellule *erase(cellule *);
 
 public:
     class iterateur;
+
     class iterateurInverse; // prendrait un const_reverse_iterator
     class iterateurVersConst;
 
     // Constructeurs
     // sans paramètre
     liste();
+
     // copieur
-    liste(const liste&)=delete; // copieur desactivé
-    liste(liste&&);
+    liste(const liste &) = delete; // copieur desactivé
+    liste(liste &&);
+
     // à partir d'une liste d'initialisation
     liste(std::initializer_list<TYPE>);
 
     // destructeur
     ~liste();
 
-    liste& operator=(const liste&);
+    liste &operator=(const liste &);
 
-    iterateur insert(iterateur, const TYPE&);     // Retourne un iterator sur la position de la valeur ajoutee
-    iterateurInverse insert(iterateurInverse, const TYPE&);
+    iterateur insert(iterateur, const TYPE &);     // Retourne un iterator sur la position de la valeur ajoutee
+    iterateurInverse insert(iterateurInverse, const TYPE &);
 
     iterateur erase(iterateur);                   // Retourne un iterator sur la position suivant celle supprimee
     iterateurInverse erase(iterateurInverse);
 
-    void push_back(const TYPE&);
+    void push_back(const TYPE &);
+
     void pop_back();
-    void push_front(const TYPE&);
+
+    void push_front(const TYPE &);
+
     void pop_front();
-    const TYPE& back()const;
-    const TYPE& front()const;
-    TYPE& back();
-    TYPE& front();
+
+    const TYPE &back() const;
+
+    const TYPE &front() const;
+
+    TYPE &back();
+
+    TYPE &front();
 
     void clear();
-    size_t size()const;
-    bool empty()const;
+
+    size_t size() const;
+
+    bool empty() const;
 
     iterateur begin();
+
     iterateur end();
+
     iterateurVersConst begin() const;
+
     iterateurVersConst end() const;
+
     iterateurVersConst cbegin() const;
+
     iterateurVersConst cend() const;
+
     iterateurInverse rbegin();
+
     iterateurInverse rend();
 
 
     //algorithmes
-    void splice(iterateur, liste&);  // Transfere le contenu de la liste recue dans la liste courante
-    void resize(size_t, const TYPE& = TYPE());
+    void splice(iterateur, liste &);  // Transfere le contenu de la liste recue dans la liste courante
+    void resize(size_t, const TYPE & = TYPE());
+
     void reverse();
 
     //fonction de mise au point (code jetable)
-    friend void afficher(std::ostream& out, const liste<TYPE>& source)
-    {
-        typename liste<TYPE>::cellule* p = source.m_debut;
+    friend void afficher(std::ostream &out, const liste<TYPE> &source) {
+        typename liste<TYPE>::cellule *p = source.m_debut;
         size_t i = 0, skipde = source.m_dim, skipa = 0;
         if (skipde > 5)
             skipde = 5;
@@ -128,9 +147,8 @@ public:
             skipa = source.m_dim - 5;
         out << "-----list " << &source << " (" << source.m_dim << " elements) -----\n";
         out << "m_debut: " << source.m_debut << "\n";
-        while (p != &(source.m_apres))
-        {
-            if (i<skipde || i>skipa)
+        while (p != &(source.m_apres)) {
+            if (i < skipde || i > skipa)
                 out << i << "=> <" << p->m_contenu
                     << "," << p->m_suiv << "," << p->m_prec
                     << ">\n";
@@ -147,101 +165,107 @@ public:
 ///////////////////////////////////////////////////////////
 //les classes d'iteration
 
-template <typename TYPE>
-class liste<TYPE>::iterateur
-{
+template<typename TYPE>
+class liste<TYPE>::iterateur {
     friend class liste<TYPE>;
+
 private:
-    cellule* m_pointeur = nullptr;
+    cellule *m_pointeur = nullptr;
 
     iterateur() = default;
-    iterateur(cellule* c) :m_pointeur(c) {}
+
+    iterateur(cellule *c) : m_pointeur(c) {}
+
 public:
 
-    TYPE& operator*()const { return m_pointeur->m_contenu; }
-    TYPE* operator->()const { return &(m_pointeur->m_contenu); }
-    iterateur& operator++()
-    {
+    TYPE &operator*() const { return m_pointeur->m_contenu; }
+
+    TYPE *operator->() const { return &(m_pointeur->m_contenu); }
+
+    iterateur &operator++() {
         // ++i
         m_pointeur = m_pointeur->m_suiv;
         return *this;
     }
-    iterateur operator++(int)
-    {
+
+    iterateur operator++(int) {
         // i++
         iterateur ret(*this);
         operator++();
         return ret;
     }
-    iterateur& operator--()
-    {
+
+    iterateur &operator--() {
         // --i
         m_pointeur = m_pointeur->m_prec;
         return *this;
     }
-    iterateur operator--(int)
-    {
+
+    iterateur operator--(int) {
         // i--
         iterateur ret(*this);
         operator--();
         return ret;
     }
-    bool operator==(const iterateur&droite)const
-    {
+
+    bool operator==(const iterateur &droite) const {
         return m_pointeur == droite.m_pointeur;
     }
-    bool operator!=(const iterateur&droite)const
-    {
+
+    bool operator!=(const iterateur &droite) const {
         return !(*this == droite);
     }
 };
 
 
-template <typename TYPE>
-class liste<TYPE>::iterateurVersConst
-{
+template<typename TYPE>
+class liste<TYPE>::iterateurVersConst {
     friend class liste<TYPE>;
+
 private:
-    const cellule* m_pointeur = nullptr;
+    const cellule *m_pointeur = nullptr;
 
     iterateurVersConst() = default;
-    iterateurVersConst(const cellule* c) :m_pointeur(c) {}
+
+    iterateurVersConst(const cellule *c) : m_pointeur(c) {}
+
 public:
 
-    const TYPE& operator*()const { return m_pointeur->m_contenu; }
-    const TYPE* operator->()const { return &(m_pointeur->m_contenu); }
-    iterateurVersConst& operator++()
-    {
+    const TYPE &operator*() const { return m_pointeur->m_contenu; }
+
+    const TYPE *operator->() const { return &(m_pointeur->m_contenu); }
+
+    iterateurVersConst &operator++() {
         // ++i
         m_pointeur = m_pointeur->m_suiv;
         return *this;
     }
-    iterateurVersConst operator++(int)
-    {
+
+    iterateurVersConst operator++(int) {
         // i++
         iterateurVersConst ret(*this);
         operator++();
         return ret;
     }
-    iterateurVersConst& operator--()
-    {
+
+    iterateurVersConst &operator--() {
         // --i
         m_pointeur = m_pointeur->m_prec;
         return *this;
     }
-    iterateurVersConst operator--(int)
-    {
+
+    iterateurVersConst operator--(int) {
         // i--
         iterateurVersConst ret(*this);
         operator--();
         return ret;
     }
-    bool operator==(const iterateurVersConst& droite)const
-    {
+
+    bool operator==(const iterateurVersConst &droite) const {
         return m_pointeur == droite.m_pointeur;
     }
-    bool operator!=(const iterateurVersConst& droite)const
-    {
+
+    bool operator!=(const iterateurVersConst &droite) const {
         return !(*this == droite);
     }
 };
@@ -250,16 +274,13 @@ public:
 #include "listeIpl.h"
 
 
-
 ///////////////////////////////////////////////////////////
-template <typename TYPE>
+template<typename TYPE>
 liste<TYPE>::liste()
-        : m_apres(TYPE()), m_debut(&m_apres), m_dim(0)
-{}
+        : m_apres(TYPE()), m_debut(&m_apres), m_dim(0) {}
 
-template <typename TYPE>
-liste<TYPE>::~liste()
-{
+template<typename TYPE>
+liste<TYPE>::~liste() {
     clear();
 }
 
@@ -273,106 +294,89 @@ liste<TYPE>::~liste()
 //    *this = droite;
 //}
 
-template <typename TYPE>
-liste<TYPE>::liste(std::initializer_list<TYPE> droite) : liste()
-{
-    for (const auto& x : droite)
+template<typename TYPE>
+liste<TYPE>::liste(std::initializer_list<TYPE> droite) : liste() {
+    for (const auto &x: droite)
         push_back(x);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateur liste<TYPE>::insert(iterateur i, const TYPE& x)
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateur liste<TYPE>::insert(iterateur i, const TYPE &x) {
     return iterateur(insert(i.m_pointeur, x));
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateur liste<TYPE>::erase(iterateur i)
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateur liste<TYPE>::erase(iterateur i) {
     return iterateur(erase(i.m_pointeur));
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurInverse liste<TYPE>::insert(iterateurInverse i, const TYPE& x)
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurInverse liste<TYPE>::insert(iterateurInverse i, const TYPE &x) {
     insert(i.m_pointeur, x);
     return i;
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurInverse liste<TYPE>::erase(iterateurInverse i)
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurInverse liste<TYPE>::erase(iterateurInverse i) {
     erase(i.m_pointeur->m_prec);
     return i;
 }
 
-template <typename TYPE>
-void liste<TYPE>::push_back(const TYPE& x)
-{
+template<typename TYPE>
+void liste<TYPE>::push_back(const TYPE &x) {
     insert(end(), x);
 }
 
-template <typename TYPE>
-void liste<TYPE>::pop_back()
-{
+template<typename TYPE>
+void liste<TYPE>::pop_back() {
     erase(rbegin());
 }
 
-template <typename TYPE>
-void liste<TYPE>::push_front(const TYPE& x)
-{
+template<typename TYPE>
+void liste<TYPE>::push_front(const TYPE &x) {
     insert(begin(), x);
 }
 
-template <typename TYPE>
-void liste<TYPE>::pop_front()
-{
+template<typename TYPE>
+void liste<TYPE>::pop_front() {
     erase(begin());
 }
 
-template <typename TYPE>
-const TYPE& liste<TYPE>::back()const
-{
+template<typename TYPE>
+const TYPE &liste<TYPE>::back() const {
     return *rbegin();
 }
 
-template <typename TYPE>
-const TYPE& liste<TYPE>::front()const
-{
+template<typename TYPE>
+const TYPE &liste<TYPE>::front() const {
     return *begin();
 }
 
-template <typename TYPE>
-TYPE& liste<TYPE>::back()
-{
+template<typename TYPE>
+TYPE &liste<TYPE>::back() {
     return *rbegin();
 }
 
-template <typename TYPE>
-TYPE& liste<TYPE>::front()
-{
+template<typename TYPE>
+TYPE &liste<TYPE>::front() {
     return *begin();
 }
 
 
-template <typename TYPE>
-void liste<TYPE>::clear()
-{
-    while (!empty())
-    {
+template<typename TYPE>
+void liste<TYPE>::clear() {
+    while (!empty()) {
         m_debut = erase(m_debut);
     }
 }
 
-template <typename TYPE>
-size_t liste<TYPE>::size()const
-{
+template<typename TYPE>
+size_t liste<TYPE>::size() const {
     return m_dim;
 }
 
-template <typename TYPE>
-bool liste<TYPE>::empty()const
-{
+template<typename TYPE>
+bool liste<TYPE>::empty() const {
     return size() == 0;
 }
 
@@ -381,39 +385,33 @@ bool liste<TYPE>::empty()const
 // gestion de l'iteration
 ///////////////////////////////////////////////////////////
 
-template <typename TYPE>
-typename liste<TYPE>::iterateur liste<TYPE>::begin()
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateur liste<TYPE>::begin() {
     return iterateur(m_debut);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateur liste<TYPE>::end()
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateur liste<TYPE>::end() {
     return iterateur(&m_apres);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurVersConst liste<TYPE>::begin() const
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurVersConst liste<TYPE>::begin() const {
     return iterateurVersConst(m_debut);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurVersConst liste<TYPE>::end() const
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurVersConst liste<TYPE>::end() const {
     return iterateurVersConst(&m_apres);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurVersConst liste<TYPE>::cbegin() const
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurVersConst liste<TYPE>::cbegin() const {
     return iterateurVersConst(m_debut);
 }
 
-template <typename TYPE>
-typename liste<TYPE>::iterateurVersConst liste<TYPE>::cend() const
-{
+template<typename TYPE>
+typename liste<TYPE>::iterateurVersConst liste<TYPE>::cend() const {
     return iterateurVersConst(&m_apres);
 }
 
@@ -422,26 +420,24 @@ typename liste<TYPE>::iterateurVersConst liste<TYPE>::cend() const
 ///////////////////////////////////////////////////////////
 
 
-template <typename TYPE>
-void liste<TYPE>::resize(size_t n, const TYPE& val)
-{
+template<typename TYPE>
+void liste<TYPE>::resize(size_t n, const TYPE &val) {
     iterateur it = begin();
-    for (size_t i = 0; i<n; ++i, ++it)
+    for (size_t i = 0; i < n; ++i, ++it)
         if (it == end())
             it = insert(it, val);
     while (it != end())
         it = erase(it);
 }
 
-template <typename TYPE>
-void liste<TYPE>::splice(iterateur i, liste<TYPE>& lst)
-{
+template<typename TYPE>
+void liste<TYPE>::splice(iterateur i, liste<TYPE> &lst) {
     if (lst.empty())
         return;
-    cellule* ap = i.m_pointeur;
-    cellule* av = ap->m_prec;
-    cellule* pr = lst.m_debut;
-    cellule* de = lst.m_apres.m_prec;
+    cellule *ap = i.m_pointeur;
+    cellule *av = ap->m_prec;
+    cellule *pr = lst.m_debut;
+    cellule *de = lst.m_apres.m_prec;
     av->m_suiv = pr;
     pr->m_prec = av;
     ap->m_prec = de;
@@ -452,31 +448,30 @@ void liste<TYPE>::splice(iterateur i, liste<TYPE>& lst)
     lst.m_debut = lst.m_apres.m_prec = lst.m_apres.m_suiv = &lst.m_apres;
 
     m_dim += lst.m_dim;
-    lst.m_dim= 0;
+    lst.m_dim = 0;
 }
 
 ///////////////////////////////////////////////////////////
 //algorithme de tri avec des iterateurs generaux
 
-template <typename iter>
-void sort(iter deb, iter fin)
-{
+template<typename iter>
+void sort(iter deb, iter fin) {
     size_t nb = 0;
     iter i = deb, j = fin, pivot = deb;
     //choisir l'element du milieu comme pivot
     for (; i != j; ++nb, ++i)
         if (static_cast<void>(++nb), i == --j)
             break;
-    if (nb<2)
+    if (nb < 2)
         return;  //rien a trier
     std::swap(*deb, *i);
     //separer la liste en deux  {<PIVOT,>=PIVOT}
     ++(i = deb);
     j = fin;
     while (i != j)
-        if (*i<*pivot)
+        if (*i < *pivot)
             ++i;
-        else if (*--j<*pivot)
+        else if (*--j < *pivot)
             std::swap(*i++, *j);
     --i;
     std::swap(*pivot, *i);
