@@ -65,6 +65,16 @@ typename liste<T>::cellule *liste<T>::erase(liste::cellule *) {
     return nullptr;
 }
 
+template<typename T>
+typename liste<T>::iterateurInverse liste<T>::rbegin() {
+    return liste::iterateurInverse();
+}
+
+template<typename T>
+typename liste<T>::iterateurInverse liste<T>::rend() {
+    return liste::iterateurInverse();
+}
+
 //Mathieu
 template<typename T>
 liste<T> &liste<T>::operator=(const liste &) {
