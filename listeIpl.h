@@ -65,6 +65,7 @@ typename liste<T>::cellule *liste<T>::insert(liste::cellule * c, const T & eleme
     }
     else {
         c->m_prec->m_suiv = newCellule;
+        newCellule->m_prec = c->m_prec;
         c->m_prec = newCellule;
     }
 
