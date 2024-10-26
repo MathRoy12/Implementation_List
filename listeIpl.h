@@ -55,8 +55,22 @@ public:
 
 //Christian
 template<typename T>
-typename liste<T>::cellule *liste<T>::insert(liste::cellule *, const T &) {
-    return nullptr;
+typename liste<T>::cellule *liste<T>::insert(liste::cellule * c, const T & element) {
+    cellule * newCellule = new liste<T>::cellule(element);
+
+    newCellule->m_suiv = c;
+    if(c->m_prec == nullptr) {
+        c->m_prec = newCellule;
+        m_debut = c->m_prec;
+    }
+    else {
+        c->m_prec->m_suiv = newCellule;
+        c->m_prec = newCellule;
+    }
+
+    m_dim++;
+
+    return newCellule;
 }
 
 //Mathieu

@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Repo/IFT339_TP3/cmake-build-debug",
-		"source" : "C:/Repo/IFT339_TP3"
+		"build" : "C:/Users/Cristian/Desktop/IFT339_TP3/cmake-build-debug",
+		"source" : "C:/Users/Cristian/Desktop/IFT339_TP3"
 	},
 	"version" : 
 	{
