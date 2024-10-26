@@ -114,7 +114,21 @@ liste<T> &liste<T>::operator=(const liste & lst) {
 //Christian
 template<typename T>
 void liste<T>::reverse() {
-
+    cellule * prev = nullptr;
+    cellule * c = m_debut;
+    cellule * next = nullptr;
+    while (c != nullptr) {
+        next = c->m_suiv;
+        c->m_suiv = prev;
+        c->m_prec = next;
+        prev = c;
+        c = next;
+    }
+    m_apres.m_prec = m_debut;
+    m_debut = prev->m_suiv;
+    m_debut->m_prec->m_prec->m_suiv = &m_apres;
+    m_debut->m_prec = nullptr;
+    m_apres.m_suiv = nullptr;
 }
 
 #endif //IFT339_TP3_LISTEIPL_H

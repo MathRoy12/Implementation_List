@@ -10,6 +10,9 @@ int main() {
     lista.push_front(8);
     lista.push_front(10);
     lista.push_back(12);
+
+    lista.reverse();
+
     afficher(std::cout, lista);
 
     //std::cout << "Hello, World!" << std::endl;
