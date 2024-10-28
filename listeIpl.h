@@ -50,7 +50,7 @@ public:
     }
 
     bool operator!=(const iterateurInverse &droite) const {
-        return *this != droite;
+        return m_pointeur != droite.m_pointeur;
     }
 };
 
@@ -102,7 +102,7 @@ typename liste<T>::iterateurInverse liste<T>::rbegin() {
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rend() {
-    return liste::iterateurInverse(m_debut);
+    return nullptr;
 }
 
 //Mathieu
