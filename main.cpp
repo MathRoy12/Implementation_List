@@ -4,17 +4,17 @@
 int main() {
 
     liste<int> lista;
-    lista.push_back(2);
-    lista.push_back(4);
-    lista.push_back(6);
-    lista.push_front(8);
-    lista.push_front(10);
-    lista.push_back(12);
+    lista.push_back(10);
+    lista.push_back(11);
+    lista.push_front(12);
+    lista.push_front(13);
+    auto i = lista.begin();
+    i++;
+    lista.erase(i);
+    afficher(std::cout,lista);
+    liste<int> listb;
+    listb = lista;
+    afficher(std::cout,listb);
 
-    lista.reverse();
-
-    afficher(std::cout, lista);
-
-    //std::cout << "Hello, World!" << std::endl;
     return 0;
 }
