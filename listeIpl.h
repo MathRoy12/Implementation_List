@@ -78,6 +78,9 @@ typename liste<T>::cellule *liste<T>::insert(liste::cellule *c, const T &element
 // TODO tester
 template<typename T>
 typename liste<T>::cellule *liste<T>::erase(liste::cellule *c) {
+    if (c == nullptr){
+        return c;
+    }
     cellule *c_suivant = c->m_suiv;
     cellule *c_precedent = c->m_prec;
 
@@ -97,12 +100,12 @@ typename liste<T>::cellule *liste<T>::erase(liste::cellule *c) {
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rbegin() {
-    return ++liste::iterateurInverse(&m_apres);
+    return liste::iterateurInverse(m_apres.m_prec);
 }
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rend() {
-    return nullptr;
+    return m_debut;
 }
 
 //Mathieu
