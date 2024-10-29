@@ -105,7 +105,7 @@ typename liste<T>::iterateurInverse liste<T>::rbegin() {
 
 template<typename T>
 typename liste<T>::iterateurInverse liste<T>::rend() {
-    return m_debut;
+    return liste::iterateurInverse(m_debut);
 }
 
 //Mathieu
